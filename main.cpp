@@ -10,11 +10,11 @@ struct peg{
 	bool on;
 
 	peg(int x, bool y);
-	bool complete(vector<peg> v);
-	void hop(peg x, peg y);
+//	bool complete(vector<peg> v);
+//	void hop(peg x, peg y);
 };
 
-bool peg::complete(vector<peg> v){
+bool complete(vector<peg> v){
 	int count = 0;
 	for(int i = 0; i<v.size(); i++){
 		if(v[i].pos > 0){
@@ -42,9 +42,35 @@ peg::peg(int x, bool y){
 
 void printBoard(vector<peg> v){
 	for(int i = 0; i<v.size(); i++){
-		printf("%d, \n", v[i].pos);
+		if(v[i].on){
+			printf("%d, \n", v[i].pos);
+		}
 	}
 }
+
+void sort(vector<peg> v){
+	if(complete(v)){
+		printBoard(v);
+	}
+	else{
+		for(int i=0; i<v.size(); i++){
+			if(v[i].on){
+				if(v[i].pos = 1){
+					if((v[2].on) && !(v[4].on)){
+						v[i].on = false;
+						v[4].on = true;
+						v[2].on = false;	
+					} 
+				}	
+
+
+
+
+			}
+		}
+	}
+}
+
 
 
 int main(int argc, char* argv[]){
@@ -68,7 +94,7 @@ int main(int argc, char* argv[]){
 	v.push_back(one);
 	v.push_back(two);
 	v.push_back(three);
-	v.push_back(four);
+/*	v.push_back(four);
 	v.push_back(five);
 	v.push_back(six);
 	v.push_back(seven);
@@ -80,7 +106,8 @@ int main(int argc, char* argv[]){
 	v.push_back(thirt);
 	v.push_back(fourt);
 	v.push_back(fift);
-
+*/
 	printBoard(v);
+	sort(v);
 	return 0;
 }
