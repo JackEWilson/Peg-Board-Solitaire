@@ -6,6 +6,7 @@
 using namespace std;
 
 struct peg{
+	int id;
 	int pos;
 	bool on;
 
@@ -35,15 +36,16 @@ void peg::hop(peg x, peg y){
 	y.on = 0;
 }*/
 
-peg::peg(int x, bool y){
+peg::peg(int x, bool y, int z){
 		pos = x;
 		on = y;
+		id = z;
 }
 
 void printBoard(vector<peg> v){
 	for(int i = 0; i<v.size(); i++){
 		if(v[i].on){
-			printf("%d, \n", v[i].pos);
+			printf("%d, \n", v[i].id);
 		}
 	}
 }
@@ -55,16 +57,65 @@ void sort(vector<peg> v){
 	else{
 		for(int i=0; i<v.size(); i++){
 			if(v[i].on){
-				if(v[i].pos = 1){
+				if(v[i].pos == 1){
 					if((v[2].on) && !(v[4].on)){
-						v[i].on = false;
-						v[4].on = true;
+						v[i].pos = v[4].pos;
 						v[2].on = false;	
-					} 
-				}	
-
-
-
+						sort(v);
+					}
+					if(v[3].on && !(v[6].on)){
+						v[i].pos = v[6].pos
+						v[3].on = false;
+						sort(v);
+					}
+				}
+				if(v[i].pos == 2){
+					if(v[4].on && !(v[7].on)){
+						v[i].pos = v[7].pos//will this mess things up?
+						v[4].on = false;
+						sort(v);
+					}
+					if(v[5].on && !(v[9].on)){
+						v[i].pos = v[9].pos
+						v[5].on = false;
+						sort(v);
+					}
+				}
+				if(v[i].pos == 3){
+					if(v[5].on && !(v[8].on)){
+						v[i].pos = v[8].pos
+						v[5].on = false;
+						sort(v);
+					}
+					if(v[6].on && !(v[10].on)){
+						v[i].pos = v[10].pos;
+						v[6].on = false;
+						sort(v);
+					}
+				}
+				if(v[i].pos == 4){
+					if(v[2].on && !(v[1].on)){
+						v[i].pos = v[1].pos;
+						v[2].on = false;
+						sort(v):
+					}
+					if(v[5].on && !(v[6].on)){
+						v[i].pos = v[6].pos;
+						v[5].on = false;
+						sort(v):
+					}
+					if(v[8].on && !(v[13].on)){
+						v[i].pos = v[13].pos;
+						v[8].on = false;
+						sort(v);
+					}
+					if(v[7].on && !(v[11].on)){
+						v[i].pos = v[11].pos;
+						v[7].on = false;
+						sort(v);
+					}
+				}
+				if
 
 			}
 		}
@@ -74,21 +125,21 @@ void sort(vector<peg> v){
 
 
 int main(int argc, char* argv[]){
-	peg one(1, 1);
-	peg two(2, 1);
-	peg three(3, 1);
-	peg four(4, 1);
-	peg five(5, 1);
-	peg six(6, 1);
-	peg seven(7, 1);
-	peg eight(8, 1);
-	peg nine(9, 1);
-	peg ten(10, 1);
-	peg eleven(11, 1);
-	peg twelve(12, 1);
-	peg thirt(13, 1);
-	peg fourt(14, 1);
-	peg fift(15, 1);
+	peg one(1, 1, 1);
+	peg two(2, 1, 2);
+	peg three(3, 1, 3);
+	peg four(4, 1, 4);
+	peg five(5, 1, 5);
+	peg six(6, 1, 6);
+	peg seven(7, 1, 7);
+	peg eight(8, 1, 8);
+	peg nine(9, 1, 9);
+	peg ten(10, 1, 10);
+	peg eleven(11, 1, 11);
+	peg twelve(12, 1, 12);
+	peg thirt(13, 1, 13);
+	peg fourt(14, 1, 14);
+	peg fift(15, 1, 15);
 
 	vector<peg> v;
 	v.push_back(one);
