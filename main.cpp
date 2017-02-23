@@ -10,8 +10,10 @@ struct peg{
 	int id;
 	int pos;
 	int on;
+
 	vector<int> jump;
 	vector<int> land;
+	vector<int> moves;
 	
 	peg(int x, int z);
 };
@@ -38,14 +40,18 @@ peg::peg(int x, int z){
 }
 
 void printBoard(vector<peg> v){
-//	for(int i = 0; i<v.size(); i++){
-//		printf("
-//	}
 	printf("         %d\n", v[0].on);
 	printf("        %d %d\n", v[1].on, v[2].on);
 	printf("       %d %d %d\n", v[3].on, v[4].on, v[5].on);
 	printf("      %d %d %d %d\n", v[6].on, v[7].on, v[8].on, v[9].on);
 	printf("     %d %d %d %d %d\n", v[10].on, v[11].on, v[12].on, v[13].on, v[14].on);
+}
+
+void printMoves(vector<peg> v){
+	for(int i = 0; i<v[0].moves.size();){
+		printf("%d -> %d\n", v[0].moves[i], v[0].moves[i+1]);
+		i+=2;
+	}
 }
 
 void sort(vector<peg> v){
@@ -56,11 +62,15 @@ void sort(vector<peg> v){
 			count++;
 		}
 	}
+
 	if(count == 14){
 		printBoard(v);
+		printf("number of sorts %d\n", count1);
+		printf("number of iterations %d\n", count2);
+		printMoves(v);
 		exit(1);
 	}
-	
+
 	for(int i = 0; i<v.size(); i++){
 		if(v[i].on == 1){
 			for(int x = 0; x<v[i].jump.size(); x++){
@@ -69,7 +79,13 @@ void sort(vector<peg> v){
 					v[v[i].jump[x]-1].on = 0;
 					v[v[i].land[x]-1].on = 1;
 					
+					v[0].moves.push_back(v[i].id);
+					v[0].moves.push_back(v[v[i].land[x]-1].id);
+
 					sort(v);
+
+					v[0].moves.pop_back();
+					v[0].moves.pop_back();
 
 					v[i].on = 1;
 					v[v[i].jump[x]-1].on = 1;
@@ -189,18 +205,18 @@ int main(int argc, char* argv[]){
 	v.push_back(fourt);
 	v.push_back(fift);
 	
+//	peg sixt(16, 16);
+//	sixt.on = 0;
+//	v.push_back(sixt);
 //	if(argc > 1){
 //		int i = argv[1];
 //		v[i-1].on = 0;
 //	}
 //	else{
-		v[14].on = 0;
+	v[0].on = 0;
 //	}
-
+	printMoves(v);
 	printBoard(v);
 	sort(v);
-	printf("number of sorts %d\n", count1);
-	printf("number of iterations %d\n", count2);
-	
 	return 0;
 }
