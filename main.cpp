@@ -55,11 +55,17 @@ void printBoard(vector<peg> v){
 void printMoves(vector<peg> v){
 	vector<peg> x = start();
 	for(int i = 0; i<v[0].moves.size();){
-		printf("%d -> %d\n", v[0].moves[i], v[0].moves[i+1]);
-//		if(board){
-//			printf("hello\n");
-//		}
-		i+=2;
+		printf("%d -> %d\n", v[0].moves[i],/* v[0].moves[i+1],*/ v[0].moves[i+2]);
+		if(board){
+			x[v[0].moves[i]-1].on = 0;
+			x[v[0].moves[i+1]-1].on = 0;
+			x[v[0].moves[i+2]-1].on = 1;
+			if(i == 0){
+				x[v[0].moves[i]-1].on = 0;
+			}
+			printBoard(x);
+		}
+		i+=3;
 	}
 }
 
@@ -82,10 +88,12 @@ void sort(vector<peg> v){
 					v[v[i].land[x]-1].on = 1;
 					
 					v[0].moves.push_back(v[i].id);
+					v[0].moves.push_back(v[v[i].jump[x]-1].id);
 					v[0].moves.push_back(v[v[i].land[x]-1].id);
 
 					sort(v);
 
+					v[0].moves.pop_back();
 					v[0].moves.pop_back();
 					v[0].moves.pop_back();
 
@@ -213,9 +221,9 @@ vector<peg> start(){
 	
 int main(int argc, char* argv[]){
 	vector<peg> v = start();
-	
+	int x;
 	if(argc == 3){
-		int x = atoi(argv[1]);
+		x = atoi(argv[1]);
 		if(x > 0 && x < 16){
 			v[x-1].on = 0;
 		}
@@ -233,8 +241,12 @@ int main(int argc, char* argv[]){
 	else{
 		fprintf(stderr, "argv not provided\n");
 		v[0].on = 0;
+		x = 1;
 	}	
-		
+	v[0].moves.push_back(x);	
+	v[0].moves.push_back(x);	
+	v[0].moves.push_back(x);	
+	
 	printBoard(v);
 	sort(v);
 
