@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-
+int count1; //counting number of sort calls
+int count2; //counting number of function interations
 using namespace std;
 
 struct peg{
@@ -12,7 +13,7 @@ struct peg{
 	vector<int> jump;
 	vector<int> land;
 	
-	peg(int x, int y, int z);
+	peg(int x, int z);
 };
 
 bool complete(vector<peg> v){
@@ -30,9 +31,9 @@ bool complete(vector<peg> v){
 	}
 }
 
-peg::peg(int x, int y, int z){
+peg::peg(int x, int z){
 		pos = x;
-		on = y;
+		on = 1;
 		id = z;
 }
 
@@ -48,28 +49,57 @@ void printBoard(vector<peg> v){
 }
 
 void sort(vector<peg> v){
+	count1++;
+	int count = 0;
+	for(int i = 0; i<v.size(); i++){
+		if(v[i].on == 0){
+			count++;
+		}
+	}
+	if(count == 14){
+		printBoard(v);
+		exit(1);
+	}
 	
+	for(int i = 0; i<v.size(); i++){
+		if(v[i].on == 1){
+			for(int x = 0; x<v[i].jump.size(); x++){
+				if(v[v[i].jump[x]-1].on == 1 && v[v[i].land[x]-1].on == 0){
+					v[i].on = 0;
+					v[v[i].jump[x]-1].on = 0;
+					v[v[i].land[x]-1].on = 1;
+					
+					sort(v);
+
+					v[i].on = 1;
+					v[v[i].jump[x]-1].on = 1;
+					v[v[i].land[x]-1].on = 0;
+				}
+				count2++;
+			}
+		}
+	}	
 }
 
 
 
 int main(int argc, char* argv[]){
-	peg one(1, 1, 1);
+	peg one(1, 1);
 	one.jump.push_back(2);
 	one.jump.push_back(3);
 	one.land.push_back(4);
 	one.land.push_back(6);
-	peg two(2, 1, 2);
+	peg two(2, 2);
 	two.jump.push_back(4);
 	two.jump.push_back(5);
 	two.land.push_back(7);
 	two.land.push_back(9);
-	peg three(3, 1, 3);
+	peg three(3, 3);
 	three.jump.push_back(5);
 	three.jump.push_back(6);
 	three.land.push_back(8);
 	three.land.push_back(10);
-	peg four(4, 1, 4);
+	peg four(4, 4);
 	four.jump.push_back(2);
 	four.jump.push_back(5);
 	four.jump.push_back(7);
@@ -78,12 +108,12 @@ int main(int argc, char* argv[]){
 	four.land.push_back(6);
 	four.land.push_back(11);
 	four.land.push_back(13);
-	peg five(5, 1, 5);
+	peg five(5, 5);
 	five.jump.push_back(8);
 	five.jump.push_back(9);
 	five.land.push_back(12);
 	five.land.push_back(14);
-	peg six(6, 1, 6);
+	peg six(6, 6);
 	six.jump.push_back(3);
 	six.jump.push_back(5);
 	six.jump.push_back(9);
@@ -92,37 +122,37 @@ int main(int argc, char* argv[]){
 	six.land.push_back(4);
 	six.land.push_back(13);
 	six.land.push_back(15);
-	peg seven(7, 1, 7);
+	peg seven(7, 7);
 	seven.jump.push_back(4);
 	seven.jump.push_back(8);
 	seven.land.push_back(2);
 	seven.land.push_back(9);
-	peg eight(8, 1, 8);
+	peg eight(8, 8);
 	eight.jump.push_back(5);
 	eight.jump.push_back(9);
 	eight.land.push_back(3);
 	eight.land.push_back(10);
-	peg nine(9, 1, 9);
+	peg nine(9, 9);
 	nine.jump.push_back(5);
 	nine.jump.push_back(8);
 	nine.land.push_back(2);
 	nine.land.push_back(7);
-	peg ten(10, 1, 10);
+	peg ten(10, 10);
 	ten.jump.push_back(6);
 	ten.jump.push_back(9);
 	ten.land.push_back(3);
 	ten.land.push_back(8);
-	peg eleven(11, 1, 11);
+	peg eleven(11, 11);
 	eleven.jump.push_back(7);
 	eleven.jump.push_back(12);
 	eleven.land.push_back(4);
 	eleven.land.push_back(13);
-	peg twelve(12, 1, 12);
+	peg twelve(12, 12);
 	twelve.jump.push_back(8);
 	twelve.jump.push_back(13);
 	twelve.land.push_back(5);
 	twelve.land.push_back(14);
-	peg thirt(13, 1, 13);
+	peg thirt(13, 13);
 	thirt.jump.push_back(8);
 	thirt.jump.push_back(9);
 	thirt.jump.push_back(12);
@@ -131,17 +161,17 @@ int main(int argc, char* argv[]){
 	thirt.land.push_back(6);
 	thirt.land.push_back(11);
 	thirt.land.push_back(15);
-	peg fourt(14, 1, 14);
+	peg fourt(14, 14);
 	fourt.jump.push_back(9);
 	fourt.jump.push_back(13);
 	fourt.land.push_back(5);
 	fourt.land.push_back(12);
-	peg fift(15, 1, 15);
+	peg fift(15, 15);
 	fift.jump.push_back(10);
 	fift.jump.push_back(14);
 	fift.land.push_back(6);
 	fift.land.push_back(13);
-
+	
 	vector<peg> v;
 	v.push_back(one);
 	v.push_back(two);
@@ -158,8 +188,19 @@ int main(int argc, char* argv[]){
 	v.push_back(thirt);
 	v.push_back(fourt);
 	v.push_back(fift);
+	
+//	if(argc > 1){
+//		int i = argv[1];
+//		v[i-1].on = 0;
+//	}
+//	else{
+		v[14].on = 0;
+//	}
 
 	printBoard(v);
 	sort(v);
+	printf("number of sorts %d\n", count1);
+	printf("number of iterations %d\n", count2);
+	
 	return 0;
 }
