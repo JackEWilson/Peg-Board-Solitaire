@@ -2,30 +2,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <cstdlib>
+#include <string.h>
+
 int count1; //counting number of sort calls
 int count2; //counting number of function interations
+bool board = true;
+
 using namespace std;
 
 struct peg{
 	int id;
-	int pos;
 	int on;
 
 	vector<int> jump;
 	vector<int> land;
 	vector<int> moves;
 	
-	peg(int x, int z);
+	peg(int z);
 };
+
+vector<peg> start();
 
 bool complete(vector<peg> v){
 	int count = 0;
 	for(int i = 0; i<v.size(); i++){
-		if(v[i].pos > 0){
+		if(v[i].on == 0){
 			count++;
 		}
 	}	
-	if(count == 1){
+	if(count == 14){
 		return true;
 	}
 	else{
@@ -33,8 +39,7 @@ bool complete(vector<peg> v){
 	}
 }
 
-peg::peg(int x, int z){
-		pos = x;
+peg::peg(int z){
 		on = 1;
 		id = z;
 }
@@ -48,22 +53,19 @@ void printBoard(vector<peg> v){
 }
 
 void printMoves(vector<peg> v){
+	vector<peg> x = start();
 	for(int i = 0; i<v[0].moves.size();){
 		printf("%d -> %d\n", v[0].moves[i], v[0].moves[i+1]);
+//		if(board){
+//			printf("hello\n");
+//		}
 		i+=2;
 	}
 }
 
 void sort(vector<peg> v){
 	count1++;
-	int count = 0;
-	for(int i = 0; i<v.size(); i++){
-		if(v[i].on == 0){
-			count++;
-		}
-	}
-
-	if(count == 14){
+	if(complete(v)){
 		printBoard(v);
 		printf("number of sorts %d\n", count1);
 		printf("number of iterations %d\n", count2);
@@ -94,28 +96,28 @@ void sort(vector<peg> v){
 				count2++;
 			}
 		}
-	}	
+	}
 }
 
 
 
-int main(int argc, char* argv[]){
-	peg one(1, 1);
+vector<peg> start(){
+	peg one(1);
 	one.jump.push_back(2);
 	one.jump.push_back(3);
 	one.land.push_back(4);
 	one.land.push_back(6);
-	peg two(2, 2);
+	peg two(2);
 	two.jump.push_back(4);
 	two.jump.push_back(5);
 	two.land.push_back(7);
 	two.land.push_back(9);
-	peg three(3, 3);
+	peg three(3);
 	three.jump.push_back(5);
 	three.jump.push_back(6);
 	three.land.push_back(8);
 	three.land.push_back(10);
-	peg four(4, 4);
+	peg four(4);
 	four.jump.push_back(2);
 	four.jump.push_back(5);
 	four.jump.push_back(7);
@@ -124,12 +126,12 @@ int main(int argc, char* argv[]){
 	four.land.push_back(6);
 	four.land.push_back(11);
 	four.land.push_back(13);
-	peg five(5, 5);
+	peg five(5);
 	five.jump.push_back(8);
 	five.jump.push_back(9);
 	five.land.push_back(12);
 	five.land.push_back(14);
-	peg six(6, 6);
+	peg six(6);
 	six.jump.push_back(3);
 	six.jump.push_back(5);
 	six.jump.push_back(9);
@@ -138,37 +140,37 @@ int main(int argc, char* argv[]){
 	six.land.push_back(4);
 	six.land.push_back(13);
 	six.land.push_back(15);
-	peg seven(7, 7);
+	peg seven(7);
 	seven.jump.push_back(4);
 	seven.jump.push_back(8);
 	seven.land.push_back(2);
 	seven.land.push_back(9);
-	peg eight(8, 8);
+	peg eight(8);
 	eight.jump.push_back(5);
 	eight.jump.push_back(9);
 	eight.land.push_back(3);
 	eight.land.push_back(10);
-	peg nine(9, 9);
+	peg nine(9);
 	nine.jump.push_back(5);
 	nine.jump.push_back(8);
 	nine.land.push_back(2);
 	nine.land.push_back(7);
-	peg ten(10, 10);
+	peg ten(10);
 	ten.jump.push_back(6);
 	ten.jump.push_back(9);
 	ten.land.push_back(3);
 	ten.land.push_back(8);
-	peg eleven(11, 11);
+	peg eleven(11);
 	eleven.jump.push_back(7);
 	eleven.jump.push_back(12);
 	eleven.land.push_back(4);
 	eleven.land.push_back(13);
-	peg twelve(12, 12);
+	peg twelve(12);
 	twelve.jump.push_back(8);
 	twelve.jump.push_back(13);
 	twelve.land.push_back(5);
 	twelve.land.push_back(14);
-	peg thirt(13, 13);
+	peg thirt(13);
 	thirt.jump.push_back(8);
 	thirt.jump.push_back(9);
 	thirt.jump.push_back(12);
@@ -177,18 +179,19 @@ int main(int argc, char* argv[]){
 	thirt.land.push_back(6);
 	thirt.land.push_back(11);
 	thirt.land.push_back(15);
-	peg fourt(14, 14);
+	peg fourt(14);
 	fourt.jump.push_back(9);
 	fourt.jump.push_back(13);
 	fourt.land.push_back(5);
 	fourt.land.push_back(12);
-	peg fift(15, 15);
+	peg fift(15);
 	fift.jump.push_back(10);
 	fift.jump.push_back(14);
 	fift.land.push_back(6);
 	fift.land.push_back(13);
-	
-	vector<peg> v;
+
+	vector<peg> v;	
+
 	v.push_back(one);
 	v.push_back(two);
 	v.push_back(three);
@@ -204,19 +207,36 @@ int main(int argc, char* argv[]){
 	v.push_back(thirt);
 	v.push_back(fourt);
 	v.push_back(fift);
+
+	return v;
+}
 	
-//	peg sixt(16, 16);
-//	sixt.on = 0;
-//	v.push_back(sixt);
-//	if(argc > 1){
-//		int i = argv[1];
-//		v[i-1].on = 0;
-//	}
-//	else{
-	v[0].on = 0;
-//	}
-	printMoves(v);
+int main(int argc, char* argv[]){
+	vector<peg> v = start();
+	
+	if(argc == 3){
+		int x = atoi(argv[1]);
+		if(x > 0 && x < 16){
+			v[x-1].on = 0;
+		}
+		else{
+			fprintf(stderr, "Correct usage: a.out 4 false\n");
+			fprintf(stderr, "Number must be 1 - 15\n");
+		}
+		if(strcmp(argv[2], "true") == 1){
+//			board = true;	
+		}
+		else{
+//			board = false;
+		}
+	}
+	else{
+		fprintf(stderr, "argv not provided\n");
+		v[0].on = 0;
+	}	
+		
 	printBoard(v);
 	sort(v);
+
 	return 0;
 }
