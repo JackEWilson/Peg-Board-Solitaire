@@ -5,8 +5,6 @@
 #include <cstdlib>
 #include <string.h>
 
-int count1; //counting number of sort calls
-int count2; //counting number of function interations
 bool board = true;
 
 using namespace std;
@@ -45,17 +43,17 @@ peg::peg(int z){
 }
 
 void printBoard(vector<peg> v){
-	printf("         %d\n", v[0].on);
-	printf("        %d %d\n", v[1].on, v[2].on);
-	printf("       %d %d %d\n", v[3].on, v[4].on, v[5].on);
-	printf("      %d %d %d %d\n", v[6].on, v[7].on, v[8].on, v[9].on);
-	printf("     %d %d %d %d %d\n", v[10].on, v[11].on, v[12].on, v[13].on, v[14].on);
+	printf("%10d\n", v[0].on);
+	printf("%8d%4d\n", v[1].on, v[2].on);
+	printf("%6d%4d%4d\n", v[3].on, v[4].on, v[5].on);
+	printf("%4d%4d%4d%4d\n", v[6].on, v[7].on, v[8].on, v[9].on);
+	printf("%2d%4d%4d%4d%4d\n", v[10].on, v[11].on, v[12].on, v[13].on, v[14].on);
 }
 
 void printMoves(vector<peg> v){
 	vector<peg> x = start();
 	for(int i = 0; i<v[0].moves.size();){
-		printf("%d -> %d\n", v[0].moves[i],/* v[0].moves[i+1],*/ v[0].moves[i+2]);
+		printf("%d -> %d\n", v[0].moves[i], v[0].moves[i+2]);
 		if(board){
 			x[v[0].moves[i]-1].on = 0;
 			x[v[0].moves[i+1]-1].on = 0;
@@ -70,13 +68,9 @@ void printMoves(vector<peg> v){
 }
 
 void sort(vector<peg> v){
-	count1++;
 	if(complete(v)){
-		printBoard(v);
-		printf("number of sorts %d\n", count1);
-		printf("number of iterations %d\n", count2);
 		printMoves(v);
-		exit(1);
+		exit(EXIT_SUCCESS);
 	}
 
 	for(int i = 0; i<v.size(); i++){
@@ -101,13 +95,10 @@ void sort(vector<peg> v){
 					v[v[i].jump[x]-1].on = 1;
 					v[v[i].land[x]-1].on = 0;
 				}
-				count2++;
 			}
 		}
 	}
 }
-
-
 
 vector<peg> start(){
 	peg one(1);
@@ -228,26 +219,27 @@ int main(int argc, char* argv[]){
 			v[x-1].on = 0;
 		}
 		else{
-			fprintf(stderr, "Correct usage: a.out 4 false\n");
 			fprintf(stderr, "Number must be 1 - 15\n");
 		}
-		if(strcmp(argv[2], "true") == 1){
-//			board = true;	
+		if(strcmp(argv[2], "true") == 0){
+			board = true;	
 		}
 		else{
-//			board = false;
+			board = false;
 		}
 	}
 	else{
-		fprintf(stderr, "argv not provided\n");
+		fprintf(stderr, "Correct usage: a.out 4 false\n");
+		fprintf(stderr, "Since argv not provided assuming: a.out 1 false\n");
 		v[0].on = 0;
 		x = 1;
+		board = false;
 	}	
+
 	v[0].moves.push_back(x);	
 	v[0].moves.push_back(x);	
 	v[0].moves.push_back(x);	
 	
-	printBoard(v);
 	sort(v);
 
 	return 0;
